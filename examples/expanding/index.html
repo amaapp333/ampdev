@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <title>HTML5 Expanding 300x250</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!-- Step 1. Add AppNexus' HTML5 javascript library. -->
+    <script type="text/javascript" src="https://acdn.adnxs.com/html5-lib/1.4.1/appnexus-html5-lib.min.js"></script>
+    <!-- End of Step 1. -->
+  </head>
+  <body>
+  <!-- Step 2. Add id="clickthrough" to the main container of the ad. Adding this to the body will also work. -->
+  <div class="container expandable" id="expanding-container">
+  <!-- End of Step 2. -->
+    <div class="logo">
+      <img src="images/an_logo.png" border="0">
+    </div>
+    <div class="tagline expandable" id="tagline">
+      <span class="text">Powering</span>
+      <span class="text">the <strong>advertising</strong></span>
+      <span class="text">that powers</span>
+      <span class="text">the <strong>Internet</strong><span id="trademark">&trade;</span></span>
+    </div>
+  </div>
+
+    <!-- Step 3. Add ready and click functions inside of a script tag before the close of the body tag. Note that it targets the id set in Step 2 (see getElementById). -->
+  <script type="text/javascript">
+      APPNEXUS.ready(function () {
+        var isExpanded = false;
+        var expandingContainer = document.getElementById("expanding-container");
+        var tagline = document.getElementById('tagline');
+
+        APPNEXUS.setExpandProperties({
+          floating: true,
+          anchor: 'top-left',
+          height: 600,
+          expand: {
+            easing: 'ease-in-out',
+            duration: 1000
+          },
+          collapse: {
+            easing: 'ease-in-out',
+            duration: 300
+          }
+        });
+
+        expandingContainer.addEventListener("click", function() {
+          APPNEXUS.click();
+        });
+
+        expandingContainer.addEventListener("mouseover", function () {
+          if (!isExpanded) { 
+            console.log("appnexus expanding");
+            APPNEXUS.expand();
+          }
+          expandingContainer.style.height = 600;
+          tagline.classList.add("expandedTagline");
+
+          isExpanded = true;
+        });
+
+        expandingContainer.addEventListener('mouseout', function() {
+          if (isExpanded) {
+            console.log("appnexus collapsing");
+            APPNEXUS.collapse();
+            expandingContainer.style.height = 248;
+            tagline.classList.remove("expandedTagline");
+
+            isExpanded = false;
+          }
+        });
+      });
+  </script>
+
+  </body>
+</html>
